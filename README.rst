@@ -1,6 +1,6 @@
-=======
-synonym
-=======
+==========================================================
+**synonym**: instant synonym answers via command line. 🖖
+==========================================================
 
 
 .. image:: https://img.shields.io/pypi/v/synonym.svg
@@ -17,9 +17,28 @@ synonym
      :target: https://pyup.io/repos/github/gavinzbq/synonym/
      :alt: Updates
 
+**synonym** is nice because it allows you stay in the console.
+If you love editing articles, essays and blogs using a console-based text editor, and from time to time 
+find yourself searching
+synonyms for verbs and adjectives, then it is for you.
 
-synonym: instant synonym answers via command line.
+.. image:: docs/img/synonym_1.png
+        :alt: screenshot
+        :align: center
+        :width: 100 %
+        :scale: 100 %
 
+.. image:: docs/img/synonym_2.png
+        :alt: screenshot
+        :align: center
+        :width: 100 %
+        :scale: 100 %
+        
+.. image:: docs/img/synonym_3.png
+        :alt: screenshot
+        :align: center
+        :width: 100 %
+        :scale: 100 %
 
 * Free software: MIT license
 * Documentation: https://synonym.readthedocs.io.
@@ -28,7 +47,16 @@ synonym: instant synonym answers via command line.
 Features
 --------
 
-* TODO
+* If the word was mispelled, **synonym** would give a guess.
+
+* Limiting to a specific property (n., v., adj., adv.) is possible.
+
+* Powered by:
+  - `thesaurus.com <http://www.thesaurus.com/>`_
+  - crayons
+
+* Inspired by `howdoi <https://github.com/gleitz/howdoi>`_
+
 
 Credits
 ---------
