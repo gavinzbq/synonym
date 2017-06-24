@@ -52,10 +52,40 @@ Features
 * Limiting to a specific property (n., v., adj., adv.) is possible.
 
 * Powered by:
+
   - `thesaurus.com <http://www.thesaurus.com/>`_
   - crayons
 
 * Inspired by `howdoi <https://github.com/gleitz/howdoi>`_
+
+
+Usage
+-----
+
+::
+        
+        usage: synonym [-h] [-p property] [The Word of Interest]
+
+        positional arguments:
+          The Word of Interest
+
+        optional arguments:
+          -h, --help            show this help message and exit
+          -p, --property        The Property of Interest        
+
+
+Install
+-------
+
+::
+        
+        pip install synonym
+
+
+Author
+------
+
+* `Shanyun Gao <http://soultomount.press/>`_
 
 
 Credits

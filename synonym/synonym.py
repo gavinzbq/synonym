@@ -214,7 +214,7 @@ def command_line_runner():
     args = vars(parser.parse_args())
 
     if not args['query']:
-        parser.print_help
+        parser.print_help()
         return
 
     if sys.version < '3':
