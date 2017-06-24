@@ -15,8 +15,8 @@ import random
 import os
 import requests
 import sys
-import crayons
 
+import crayons
 from pyquery import PyQuery as pq
 from requests.exceptions import ConnectionError
 from requests.exceptions import SSLError
@@ -37,15 +37,10 @@ else:
     def u(x):
         return x
 
-if os.getenv('SYNONYM_DISABLE_SSL'):  # Set http instead of https
-    SEARCH_URL = 'http://www.thesaurus.com/browse/{0}?s=t'
-    VERIFY_SSL_CERTIFICATE = False
-else:
-    SEARCH_URL = 'https://www.thesaurus.com/browse/{0}?s=t'
-    VERIFY_SSL_CERTIFICATE = True
 
+SEARCH_URL = 'http://www.thesaurus.com/browse/{0}?s=t'
+VERIFY_SSL_CERTIFICATE = False
 URL = 'www.thesaurus.com'
-
 USER_AGENTS = ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:11.0) Gecko/20100101 Firefox/11.0',
                'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:22.0) Gecko/20100 101 Firefox/22.0',
                'Mozilla/5.0 (Windows NT 6.1; rv:11.0) Gecko/20100101 Firefox/11.0',
@@ -68,13 +63,8 @@ def get_proxies():
 
 
 def _get_result(url):
-    try:
-        return requests.get(url, headers={'User-Agent': random.choice(USER_AGENTS)}, proxies=get_proxies(),
+    return requests.get(url, headers={'User-Agent': random.choice(USER_AGENTS)}, proxies=get_proxies(),
                             verify=VERIFY_SSL_CERTIFICATE).text
-    except requests.exceptions.SSLError as e:
-        print('[ERROR] Encountered an SSL Error. Try using HTTP instead of '
-              'HTTPS by setting the environment variable "SYNONYM_DISABLE_SSL".\n')
-        raise e
 
 
 def _get_link(query):
@@ -214,7 +204,9 @@ def synonym(args):
     try:
         return _display_answer(args)
     except (ConnectionError, SSLError):
-        return 'Failed to establish network connection.\n'
+        return crayons.red(
+            '\nFailed to establish network connection.\n'
+        )
 
 
 def command_line_runner():
