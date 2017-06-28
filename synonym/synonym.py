@@ -10,13 +10,16 @@
 ########################################################
 
 
+import os
+import glob
 import argparse
 import random
-import os
-import requests
 import sys
 
 import crayons
+import requests
+import requests_cache
+
 from pyquery import PyQuery as pq
 from requests.exceptions import ConnectionError
 from requests.exceptions import SSLError
@@ -41,6 +44,12 @@ else:
 SEARCH_URL = 'http://www.thesaurus.com/browse/{0}?s=t'
 VERIFY_SSL_CERTIFICATE = False
 URL = 'www.thesaurus.com'
+
+XDG_CACHE_DIR = os.environ.get('XDG_CACHE_HOME', os.path.join(os.path.expanduser('~'), '.cache'))
+CACHE_DIR = os.path.join(XDG_CACHE_DIR, 'synonym')
+CACHE_FILE = os.path.join(CACHE_DIR, 'cache{}'.format(
+    sys.version_info[0] if sys.version_info[0] == 3 else ''))
+
 USER_AGENTS = ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:11.0) Gecko/20100101 Firefox/11.0',
                'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:22.0) Gecko/20100 101 Firefox/22.0',
                'Mozilla/5.0 (Windows NT 6.1; rv:11.0) Gecko/20100101 Firefox/11.0',
@@ -63,8 +72,9 @@ def get_proxies():
 
 
 def _get_result(url):
-    return requests.get(url, headers={'User-Agent': random.choice(USER_AGENTS)}, proxies=get_proxies(),
-                            verify=VERIFY_SSL_CERTIFICATE).text
+    return requests.get(
+        url, headers={'User-Agent': random.choice(USER_AGENTS)}, proxies=get_proxies(), verify=VERIFY_SSL_CERTIFICATE
+            ).text
 
 
 def _get_link(query):
@@ -79,7 +89,7 @@ def _get_answer(args, link):
     if len(all_answers) == 0:
         syn_answers = crayons.red(
             '\nCannot find synonym for "{}".\n'.format(args['query'][0])
-                )
+                ).color_str
         return syn_answers
 
     if len(all_answers) == 1:
@@ -91,7 +101,7 @@ def _get_answer(args, link):
             guess_word = guess.text()
             syn_answers = crayons.red(
                 '\nCannot find synonym for "{}". Try "{}"?\n'.format(args['query'][0], guess_word)
-                    )
+                    ).color_str
             return syn_answers
 
     import ast
@@ -105,6 +115,7 @@ def _get_answer(args, link):
         syn_list = answer('a')
         for syn in syn_list.items():
             relevancy_str = syn.attr['data-category']
+            # dictionary-like string -> dictionary
             relevancy_dict = ast.literal_eval(relevancy_str)
             relevancy_lv = relevancy_dict['name']
 
@@ -121,7 +132,7 @@ def _filter_answer(args):
     answer_url = _get_link(args['query'][0])
     all_answers = _get_answer(args, answer_url)
 
-    if type(all_answers) in [str, crayons.ColoredString]:
+    if isinstance(all_answers, str):
         return all_answers
 
     if not args['property']:
@@ -148,7 +159,7 @@ def _filter_answer(args):
     if not filter_answer:
         return crayons.magenta(
             '\nIt seems, "{}" has no such property.\n'.format(args['query'][0])
-                )
+                ).color_str
 
     return filter_answer
 
@@ -157,7 +168,7 @@ def _display_answer(args):
     answer_url = _get_link(args['query'][0])
     answers = _filter_answer(args)
 
-    if type(answers) in [str, crayons.ColoredString]:
+    if isinstance(answers, str):
         return answers
 
     texts = ''
@@ -197,16 +208,27 @@ def get_parser():
     parser.add_argument('query', metavar='Word of Interest', type=str, nargs=1, help='The word of interest')
     parser.add_argument('-p', '--property', help='The property of interest (type n / v / adj / adv)',
                         type=str, choices=['n', 'v', 'adj', 'adv'])
+    parser.add_argument('-c', '--color', help='enable colorized output', action='store_true')
+    parser.add_argument('-C', '--clear-cache', help='clear cache', action='store_true')
     return parser
+
+
+def _enable_cache():
+    if not os.path.exists(CACHE_DIR):
+        os.makedirs(CACHE_DIR)
+    requests_cache.install_cache(CACHE_FILE)
+
+
+def _clear_cache():
+    for cache in glob.glob('{}*'.format(CACHE_FILE)):
+        os.remove(cache)
 
 
 def synonym(args):
     try:
         return _display_answer(args)
     except (ConnectionError, SSLError):
-        return crayons.red(
-            '\nFailed to establish network connection.\n'
-        )
+        return crayons.red('\nFailed to establish network connection.\n').color_str
 
 
 def command_line_runner():
@@ -216,6 +238,17 @@ def command_line_runner():
     if not args['query']:
         parser.print_help()
         return
+
+    if args['clear_cache']:
+        _clear_cache()
+        print(crayons.red('\nCache cleared successfully.\n'))
+        return
+
+    if not os.getenv('SYNONYM_DISABLE_CACHE'):
+        _enable_cache()
+
+    if not args['color']:
+        crayons.disable()
 
     if sys.version < '3':
         print(synonym(args).encode('utf-8', 'ignore'))

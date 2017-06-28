@@ -15,8 +15,8 @@ with open('HISTORY.rst') as history_file:
 requirements = [
     'pyquery',
     'requests',
+    'requests-cache',
     'crayons'
-    # TODO: put package requirements here
 ]
 
 setup_requirements = [
