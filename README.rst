@@ -64,14 +64,14 @@ Usage
 
 ::
         
-        usage: synonym [-h] [-p property] [The Word of Interest]
+        usage: synonym [-h] [-p property] [the word of interest]
 
         positional arguments:
           The Word of Interest
 
         optional arguments:
           -h, --help            show this help message and exit
-          -p, --property        The Property of Interest        
+          -p, --property        the property of interest, choose from [n, v, adj, adv]
 
 
 Install
