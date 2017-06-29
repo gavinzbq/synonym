@@ -37,7 +37,7 @@ setup(
     maintainer="Shanyun Gao",
     maintainer_email='shanyun@g.clemson.edu',
     url='https://github.com/gavinzbq/synonym',
-    download_url='https://github.com/gavinzbq/synonym/archive/{version}.tar.gz',
+    download_url='https://github.com/gavinzbq/synonym/archive/0.1.2.tar.gz',
     packages=find_packages(include=['synonym']),
     entry_points={
         'console_scripts': [
