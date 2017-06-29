@@ -206,7 +206,7 @@ def _display_answer(args):
 
 def get_parser():
     parser = argparse.ArgumentParser(description='instant synonym answers via command line')
-    parser.add_argument('query', metavar='Word of Interest', type=str, nargs=1, help='The word of interest')
+    parser.add_argument('query', metavar='Word of Interest', type=str, nargs='*', help='The word of interest')
     parser.add_argument('-p', '--property', help='The property of interest (type n / v / adj / adv)',
                         type=str, choices=['n', 'v', 'adj', 'adv'])
     parser.add_argument('-c', '--color', help='enable colorized output', action='store_true')
@@ -237,18 +237,17 @@ def command_line_runner():
     parser = get_parser()
     args = vars(parser.parse_args())
 
-    if not args['query']:
-        parser.print_help()
-        return
-
-
     if args['version']:
-        print(__version__)
+        print('synonym=={}'.format(__version__))
         return
 
     if args['clear_cache']:
         _clear_cache()
         print(crayons.red('\nCache cleared successfully.\n'))
+        return
+
+    if not args['query']:
+        parser.print_help()
         return
 
     if not os.getenv('SYNONYM_DISABLE_CACHE'):
