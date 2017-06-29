@@ -63,7 +63,6 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Operating System :: Unix',
-        'Topic :: Utility'
     ],
     tests_require=test_requirements,
     setup_requires=setup_requirements,
