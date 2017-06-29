@@ -15,6 +15,7 @@ import glob
 import argparse
 import random
 import sys
+from . import __version__
 
 import crayons
 import requests
@@ -210,6 +211,7 @@ def get_parser():
                         type=str, choices=['n', 'v', 'adj', 'adv'])
     parser.add_argument('-c', '--color', help='enable colorized output', action='store_true')
     parser.add_argument('-C', '--clear-cache', help='clear cache', action='store_true')
+    parser.add_argument('-v', '--version', help='displays the current version of synonym', action='store_true')
     return parser
 
 
@@ -237,6 +239,11 @@ def command_line_runner():
 
     if not args['query']:
         parser.print_help()
+        return
+
+
+    if args['version']:
+        print(__version__)
         return
 
     if args['clear_cache']:

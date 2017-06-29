@@ -37,6 +37,7 @@ setup(
     maintainer="Shanyun Gao",
     maintainer_email='shanyun@g.clemson.edu',
     url='https://github.com/gavinzbq/synonym',
+    download_url='https://github.com/gavinzbq/synonym/archive/{version}.tar.gz',
     packages=find_packages(include=['synonym']),
     entry_points={
         'console_scripts': [
@@ -61,6 +62,9 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Operating System :: Unix',
+        'Topic :: Dictionary',
+        'Topic :: Utility'
     ],
     tests_require=test_requirements,
     setup_requires=setup_requirements,

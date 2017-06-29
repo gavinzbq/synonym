@@ -33,12 +33,6 @@ synonyms for verbs and adjectives, then it is for you.
         :align: center
         :width: 100 %
         :scale: 100 %
-        
-.. image:: docs/img/synonym_3.png
-        :alt: screenshot
-        :align: center
-        :width: 100 %
-        :scale: 100 %
 
 * Free software: MIT license
 * Documentation: https://synonym.readthedocs.io.
@@ -51,10 +45,13 @@ Features
 
 * Limiting to a specific property (n., v., adj., adv.) is possible.
 
+* **synonym** uses cache by default for faster access. Caching can be disabled by setting `SYNONYM_DISABLE_CACHE` environment variable. The cache is in `~/.cache/howdoi`.
+
 * Powered by:
 
   - `thesaurus.com <http://www.thesaurus.com/>`_
-  - crayons
+
+* Beautiful terminal colors thanks to `crayons <https://github.com/kennethreitz/crayons>`_.
 
 * Inspired by `howdoi <https://github.com/gleitz/howdoi>`_
 
@@ -72,7 +69,10 @@ Usage
         optional arguments:
           -h, --help            show this help message and exit
           -p, --property        the property of interest, choose from [n, v, adj, adv]
+          -c, --color           enable colorized output
 
+          -C, --clear-cache     clear the cache
+          -v, --version         display the current version of synonym
 
 Install
 -------
