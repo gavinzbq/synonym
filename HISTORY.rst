@@ -18,3 +18,9 @@ History
 ------------------
 
 * Third release on PyPI.
+
+
+0.1.3 (2017-06-29)
+------------------
+
+* Fourth release on PyPI.
